@@ -48,5 +48,22 @@ this.bourne_test = {
     });
     test.done();
   },
+  'can insert record': function (test) {
+    test.expect(2);
+    var db = new Bourne(testName, {reset: true});
+    db.insert(testRecord1, function (err, record) {
+      test.equal(testRecord1.firstname, record.firstname, 'names should be equal');
+      test.equal(record.id, 1, 'id should be 1');
+      test.done();
+    })
+  },
+  'can store record persistently': function (test) {
+    var db1 = new Bourne(testName, {reset: true});
+    db1.insert(testRecord1, function (err, record) {
+      var db2 = new Bourne(testName);
+      test.equal(db2.data[0].firstname, testRecord1.firstname, 'names should be equal');
+
+      test.done();
+    })
   }
 };
